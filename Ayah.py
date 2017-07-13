@@ -131,11 +131,15 @@ def get_ayah(intent_request):
     # In a real bot, this would likely involve a call to a backend service.
 
     url = 'http://api.alquran.cloud/ayah/'+ayah_number+'/editions/en.sahih'
-    response = requests.post(url)
+    logger.debug("request url..{}".format(url))
+    response = requests.get(url)
+    resp_data = response.json()
+    logger.debug("Response... {}".format(resp_data))
+    #response ="this is a test response"
     return close(intent_request['sessionAttributes'],
                  'Fulfilled',
                  {'contentType': 'PlainText',
-                  'content': response[data][text]})
+                  'content': resp_data})
 
 
 """ --- Intents --- """
@@ -171,3 +175,4 @@ def lambda_handler(event, context):
     logger.debug('event.bot.name={}'.format(event['bot']['name']))
 
     return dispatch(event)
+
